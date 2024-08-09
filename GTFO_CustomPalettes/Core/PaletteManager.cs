@@ -15,39 +15,52 @@ namespace CustomPalettes.Core
 
         private static readonly List<CustomPalette> _palettes = new();
 
-
         private static readonly JsonSerializerSettings _jsonSettings = new()
         {
             Formatting = Formatting.Indented
         };
 
-        private const string templateFileName = "_template_palette.json";
+        private const string TEMPLATE_FILE_NAME = "_template_palette.json";
+        public static string BLOCK_PREFIX => $"{EntryPoint.GUID}_{nameof(CustomPalette)}_".ToUpper();
+
         public static bool DoLoadTemplateFile { get; set; } = false;
 
-        internal static void LoadPalettes()
+        internal static void Setup()
         {
-            
-            var path = Path.Combine(BepInEx.Paths.BepInExRootPath, "Assets", "CustomPalettes");
-
-            L.Info($"Loading Custom Palettes from [{path}]!");
-
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(CustomPalettesPath))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(CustomPalettesPath);
             }
 
-            var templateFilePath = Path.Combine(path, templateFileName);
+            var templateFilePath = Path.Combine(CustomPalettesPath, TEMPLATE_FILE_NAME);
             if (!File.Exists(templateFilePath))
             {
                 var template = JsonConvert.SerializeObject(GetTemplate(), _jsonSettings);
                 File.WriteAllText(templateFilePath, template);
             }
+        }
 
-            foreach(var file in Directory.GetFiles(path))
+        internal static void LoadPalettes()
+        {
+            _palettes.Clear();
+
+            L.Info($"Loading Custom Palettes from [{CustomPalettesPath}]!");
+
+            foreach(var file in Directory.GetFiles(CustomPalettesPath))
             {
                 var fileName = Path.GetFileName(file);
 
-                if (fileName == templateFileName && !DoLoadTemplateFile)
+                if (!Path.HasExtension(file))
+                {
+                    continue;
+                }
+
+                if (Path.GetExtension(file) != ".json")
+                {
+                    continue;
+                }
+
+                if (fileName == TEMPLATE_FILE_NAME && !DoLoadTemplateFile)
                 {
                     continue;
                 }
@@ -56,7 +69,9 @@ namespace CustomPalettes.Core
                 {
                     var cPal = JsonConvert.DeserializeObject<CustomPalette>(File.ReadAllText(file), _jsonSettings);
 
-                    L.Info($"Loaded Custom Palette: ({cPal.InternalName}): {cPal.Author} | {cPal.Name}");
+                    L.Info($"Loaded Custom Palette: ({cPal.SortingName}): {cPal.Author} | {cPal.Name}");
+
+                    cPal.FileName = fileName;
 
                     _palettes.Add(cPal);
                 }
@@ -73,7 +88,7 @@ namespace CustomPalettes.Core
             {
                 Author = "YourNameHere",
                 Name = "Display Name Ingame",
-                InternalName = "ANameHere",
+                SortingName = "UsedToSort",
                 Data = new()
                 {
                     PrimaryTone = new()
@@ -100,47 +115,77 @@ namespace CustomPalettes.Core
             };
         }
 
-        internal static void InjectPalettes()
+        internal static void InjectPalettes(bool forceRegeneration = false)
         {
             L.Info($"Injecting {_palettes.Count} Custom Palettes ...");
-            var allPalettes = _palettes.OrderBy(i => $"{i.Author}_{i.InternalName}");
+            var allPalettes = _palettes.OrderBy(pal => $"{pal.Author}_{pal.SortingName}_{pal.FileName}");
+
+
+            foreach (var block in VanityItemsTemplateDataBlock.GetAllBlocks())
+            {
+                if (block.name.StartsWith(BLOCK_PREFIX))
+                {
+                    block.internalEnabled = false;
+                }
+            }
 
             foreach (var cPal in allPalettes)
             {
-                var block = new VanityItemsTemplateDataBlock();
-
                 try
                 {
-                    block.name = cPal.InternalName;
+                    var identifier = BLOCK_PREFIX + cPal.FileName.ToUpper();
+
+                    VanityItemsTemplateDataBlock block;
+
+                    if (VanityItemsTemplateDataBlock.HasBlock(identifier))
+                    {
+                        block = VanityItemsTemplateDataBlock.GetBlock(identifier);
+
+                        block.prefab = GeneratePrefab(identifier, cPal.Data, forceRegeneration);
+                        block.publicName = cPal.Name;
+                        block.internalEnabled = true;
+
+                        continue;
+                    }
+
+                    block = new();
+
+                    block.name = identifier;
                     block.internalEnabled = true;
 
                     block.DropWeight = 1;
                     block.type = ClothesType.Palette;
                     block.publicName = cPal.Name;
-                    block.prefab = GeneratePrefab(cPal);
+                    block.prefab = GeneratePrefab(identifier, cPal.Data, forceRegeneration);
 
                     VanityItemsTemplateDataBlock.AddBlock(block);
                 }
                 catch(Exception ex)
                 {
-                    L.Warning($"Failed to load Custom Palette \"{cPal?.InternalName ?? "Unnamed"}\".");
+                    L.Warning($"Failed to load Custom Palette \"{cPal?.Name ?? "Unnamed"}\" ({cPal.FileName}).");
                     L.Exception(ex);
                 }
                 
             }
         }
 
-        private static string GeneratePrefab(CustomPalette cPal)
+        private static string GeneratePrefab(string identifier, PaletteData data, bool forceRegeneration = false)
         {
-            var identifier = $"{cPal.Author}_{cPal.InternalName}".ToUpper();// cPal.Author + "_" + cPal.InternalName;
+            if (string.IsNullOrWhiteSpace(identifier))
+                throw new ArgumentException("Identifier may not be null or whitespace.", nameof(identifier));
 
-            if(AssetShards.AssetShardManager.s_loadedAssetsLookup.ContainsKey(identifier))
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (AssetShards.AssetShardManager.s_loadedAssetsLookup.ContainsKey(identifier))
             {
-                return identifier;
+                if (!forceRegeneration)
+                    return identifier;
+
+                L.Debug($"Regenerating Palette prefab for \"{identifier}\" ...");
+                UnityEngine.Object.Destroy(AssetShards.AssetShardManager.s_loadedAssetsLookup[identifier]);
             }
 
-            var data = cPal.Data ?? throw new InvalidDataException($"{nameof(CustomPalette)}.{nameof(CustomPalette.Data)} can't be null!");
-            
             var go = new GameObject(identifier);
 
             go.hideFlags = HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
@@ -155,7 +200,7 @@ namespace CustomPalettes.Core
             palette.m_quaternaryTone = data.GetTone(4);
             palette.m_quinaryTone = data.GetTone(5);
 
-            AssetShards.AssetShardManager.s_loadedAssetsLookup.Add(identifier, go);
+            AssetShards.AssetShardManager.s_loadedAssetsLookup[identifier] = go;
 
             return identifier;
         }

@@ -9,7 +9,7 @@ namespace CustomPalettes
     [BepInPlugin(GUID, NAME, VERSION)]
     public class EntryPoint : BasePlugin
     {
-        public const string GUID = "dev.aurirex.custompalettes";
+        public const string GUID = "dev.aurirex.gtfo.custompalettes";
         public const string NAME = "Custom Palettes";
         public const string VERSION = "0.0.1";
 
@@ -23,14 +23,31 @@ namespace CustomPalettes
 
             _harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
 
-            //PaletteManager.DoLoadTemplateFile = true;
+            PaletteManager.Setup();
             PaletteManager.LoadPalettes();
         }
 
-        internal static void OnDatablocksReady()
+        internal static void OnAssetShardManagerReady()
         {
-            L.Debug("Datablocks ready, Injecting Palettes");
+            L.Debug("AssetShardManager ready, Injecting Palettes");
             PaletteManager.InjectPalettes();
+        }
+
+        private static bool _hasInitedOnce = false;
+        internal static void OnGameDataInit()
+        {
+            L.Debug("GameDataInit.Initialize called.");
+
+            if (_hasInitedOnce)
+            {
+                // Most likely MTFO Hot-Reload
+                L.Warning("Reloading Custom Palettes ...");
+                PaletteManager.LoadPalettes();
+                PaletteManager.InjectPalettes(forceRegeneration: true);
+                PersistentInventoryManager.m_dirty = true; // Refreshes inventory
+            }
+
+            _hasInitedOnce = true;
         }
     }
 }

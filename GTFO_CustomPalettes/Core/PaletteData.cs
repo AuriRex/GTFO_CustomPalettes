@@ -28,7 +28,7 @@ namespace CustomPalettes.Core
 
 
         [JsonIgnore]
-        private static ClothesPalette.Tone _errorTone = new()
+        private static readonly ClothesPalette.Tone _errorTone = new()
         {
             m_color = Color.magenta,
             m_texture = Texture2D.whiteTexture,
@@ -64,13 +64,13 @@ namespace CustomPalettes.Core
                     return _errorTone;
             }
 
-            Texture2D texture = TextureLoader.GetTexture(tone?.TextureFile);
+            Texture2D texture = TextureLoader.GetTexture(tone.TextureFile);
 
             return new ClothesPalette.Tone
             {
                 m_color = col,
                 m_texture = texture,
-                m_materialOverride = tone?.MaterialOverride ?? -1,
+                m_materialOverride = tone.MaterialOverride,
             };
         }
     }
