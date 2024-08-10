@@ -12,6 +12,20 @@ Textures and colors are applied *multiplicative*, that means if you want your im
 
 If you set your color to green (`#00FF00`) and choose a rainbow texture `examples/rainbow.png`, then only the parts that are green are gonna show up in game, which results in a stripped pattern alternating green and black.
 
+### Things to be aware of
+
+To avoid conflicts with other palettes I'd recommend making sure your custom palette json files have a unique name;  
+Maybe include your name, something like `AuriRex_MyCoolPalette1.json` should do the trick.
+
+The same thing goes for textures, I'd recommend creating a folder with the same name as your json file and putting all your textures in there.  
+Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolPalette1/custom_texture1.png`.
+
+### Tone Reference
+
+<p align="center">
+  <img src="./palette_tone_ref.png" alt="Tone Reference"/>
+</p>
+
 ### Fields
 * `Name`: The name displayed in game in the palettes selection menu.
 * `Author`: The palette author, your name most likely (not shown in game atm).

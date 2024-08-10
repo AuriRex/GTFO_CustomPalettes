@@ -118,29 +118,29 @@ namespace CustomPalettes.Core
             return new CustomPalette()
             {
                 Author = "YourNameHere",
-                Name = "Display Name Ingame",
+                Name = "Template Palette",
                 SortingName = "UsedToSort",
                 Data = new()
                 {
                     PrimaryTone = new()
                     {
-                        HexColor = "#000000"
+                        HexColor = "#FF0000"
                     },
                     SecondaryTone = new()
                     {
-                        HexColor = "#44006F"
+                        HexColor = "#00FF00"
                     },
                     TertiaryTone = new()
                     {
-                        HexColor = "#2c0000"
+                        HexColor = "#0000FF"
                     },
                     QuaternaryTone = new()
                     {
-                        HexColor = "#332300"
+                        HexColor = "#FFFF00"
                     },
                     QuinaryTone = new()
                     {
-                        HexColor = "#410073"
+                        HexColor = "#00FFFF"
                     }
                 }
             };
