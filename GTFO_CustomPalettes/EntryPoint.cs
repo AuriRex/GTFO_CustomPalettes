@@ -4,6 +4,10 @@ using CustomPalettes.Core;
 using HarmonyLib;
 using System.Reflection;
 
+[assembly: AssemblyVersion(CustomPalettes.EntryPoint.VERSION)]
+[assembly: AssemblyFileVersion(CustomPalettes.EntryPoint.VERSION)]
+[assembly: AssemblyInformationalVersion(CustomPalettes.EntryPoint.VERSION)]
+
 namespace CustomPalettes
 {
     [BepInPlugin(GUID, NAME, VERSION)]
