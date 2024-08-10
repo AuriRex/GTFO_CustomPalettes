@@ -6,11 +6,16 @@ Custom Plaettes go into the `BepInEx/Assets/CustomPalettes/` folder (created upo
 Additionally a template json file will be generated inside of that folder.
 Make sure to copy and rename this template to something else, the template won't be loaded itself.
 
+MTFO Hot-Reloading is supported for palettes **and** texture files, just place them in the folder and hit reload.
+
 ## Custom Palettes json file
 
 Textures and colors are applied *multiplicative*, that means if you want your image texture to properly show make sure to set your color to white / `#FFF`
 
 If you set your color to green (`#00FF00`) and choose a rainbow texture `examples/rainbow.png`, then only the parts that are green are gonna show up in game, which results in a stripped pattern alternating green and black.
+
+Also because of this you can treat textures like patterns, where white equals full color and black no color.  
+Check the `examples` folder in this repo to see a few different patterns.
 
 ### Things to be aware of
 

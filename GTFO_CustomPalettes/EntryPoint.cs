@@ -15,7 +15,7 @@ namespace CustomPalettes
     {
         public const string GUID = "dev.aurirex.gtfo.custompalettes";
         public const string NAME = "Custom Palettes";
-        public const string VERSION = "0.0.1";
+        public const string VERSION = "1.0.0";
 
         private Harmony _harmonyInstance;
 
