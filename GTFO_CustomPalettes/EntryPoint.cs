@@ -34,6 +34,7 @@ namespace CustomPalettes
         internal static void OnAssetShardManagerReady()
         {
             L.Debug("AssetShardManager ready, Injecting Palettes");
+            TextureLoader.Setup(PaletteManager.Palletes);
             PaletteManager.InjectPalettes();
         }
 
@@ -47,6 +48,7 @@ namespace CustomPalettes
                 // Most likely MTFO Hot-Reload
                 L.Warning("Reloading Custom Palettes ...");
                 PaletteManager.LoadPalettes();
+                TextureLoader.Setup(PaletteManager.Palletes, doCleanup: true);
                 PaletteManager.InjectPalettes(forceRegeneration: true);
                 PersistentInventoryManager.m_dirty = true; // Refreshes inventory
             }

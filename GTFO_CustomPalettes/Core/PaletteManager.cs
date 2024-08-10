@@ -24,6 +24,7 @@ namespace CustomPalettes.Core
         public static string BLOCK_PREFIX => $"{EntryPoint.GUID}_{nameof(CustomPalette)}_".ToUpper();
 
         public static bool DoLoadTemplateFile { get; set; } = false;
+        public static IEnumerable<CustomPalette> Palletes => _palettes;
 
         internal static void Setup()
         {
@@ -73,6 +74,8 @@ namespace CustomPalettes.Core
 
                     cPal.FileName = fileName;
 
+                    Sanitize(cPal);
+
                     _palettes.Add(cPal);
                 }
                 catch(Exception ex)
@@ -80,6 +83,34 @@ namespace CustomPalettes.Core
                     L.Exception(ex);
                 }
             }
+        }
+
+        internal static void Sanitize(CustomPalette pal)
+        {
+            var tones = pal?.Data?.Tones;
+
+            if (tones == null)
+                return;
+
+            foreach (var tone in tones)
+            {
+                tone.TextureFile = SanitizePath(tone.TextureFile);
+            }
+        }
+
+        internal static string SanitizePath(string tex)
+        {
+            foreach (var c in Path.GetInvalidPathChars())
+            {
+                tex = tex.Replace(c, '_');
+            }
+
+            while (tex.Contains(".."))
+            {
+                tex = tex.Replace("..", "");
+            }
+
+            return tex.Replace(":", "");
         }
 
         private static CustomPalette GetTemplate()

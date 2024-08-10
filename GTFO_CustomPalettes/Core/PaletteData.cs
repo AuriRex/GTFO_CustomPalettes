@@ -1,5 +1,8 @@
 ﻿using Clonesoft.Json;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static Il2CppSystem.Globalization.CultureInfo;
 
 namespace CustomPalettes.Core
 {
@@ -34,6 +37,24 @@ namespace CustomPalettes.Core
             m_texture = Texture2D.whiteTexture,
             m_materialOverride = -1,
         };
+
+        [JsonIgnore]
+        public IEnumerable<Tone> Tones
+        {
+            get
+            {
+                if(PrimaryTone != null)
+                    yield return PrimaryTone;
+                if (SecondaryTone != null)
+                    yield return SecondaryTone;
+                if (TertiaryTone != null)
+                    yield return TertiaryTone;
+                if (QuaternaryTone != null)
+                    yield return QuaternaryTone;
+                if (QuinaryTone != null)
+                    yield return QuinaryTone;
+            }
+        }
 
         internal ClothesPalette.Tone GetTone(int v)
         {
