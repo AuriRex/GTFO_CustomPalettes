@@ -2,11 +2,13 @@
 
 A GTFO mod that lets you add custom color palettes using json files, no Unity or DataBlock fiddling required!
 
-Custom Plaettes go into the `BepInEx/Assets/CustomPalettes/` folder (created upon starting the game once with the mod installed).  
+Custom Palettes go into the `BepInEx/Assets/CustomPalettes/` folder (created upon starting the game once with the mod installed).  
 Additionally a template json file will be generated inside of that folder.
 Make sure to copy and rename this template to something else, the template won't be loaded itself.
 
 MTFO Hot-Reloading is supported for palettes **and** texture files, just place them in the folder and hit reload.
+
+## **Either [AllVanity](https://thunderstore.io/c/gtfo/p/AuriRex/AllVanity/) or [DeviousLick](https://thunderstore.io/c/gtfo/p/Frog/DeviousLick/) is required for the Palettes to show up in game!**
 
 ## Custom Palettes json file
 
