@@ -28,7 +28,7 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
 ### Tone Reference
 
 <p align="center">
-  <img src="./palette_tone_ref.png" alt="Tone Reference"/>
+  <img src="https://raw.githubusercontent.com/AuriRex/GTFO_CustomPalettes/main/palette_tone_ref.png" alt="Tone Reference"/>
 </p>
 
 ### Fields
