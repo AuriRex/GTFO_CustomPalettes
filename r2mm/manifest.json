@@ -1,7 +1,7 @@
 {
     "name": "CustomPalettes",
     "author": "AuriRex",
-    "version_number": "1.0.1",
+    "version_number": "1.0.2",
     "website_url": "https://github.com/AuriRex/GTFO_CustomPalettes/",
     "description": "Add custom Palettes to the game using json files and pngs!",
     "dependencies": [
