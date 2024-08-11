@@ -1,0 +1,33 @@
+{
+  "Name": "Combat Purple",
+  "Author": "AuriRex",
+  "SortingName": "Purple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#191221",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#3b1a65",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#f3b435",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#000000",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "QuinaryTone": {
+      "HexColor": "#8d7e91",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "TextureTiling": 10
+  }
+}

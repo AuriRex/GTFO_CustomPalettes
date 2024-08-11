@@ -1,0 +1,33 @@
+{
+  "Name": "Pur Ple",
+  "Author": "AuriRex",
+  "SortingName": "Purple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#191221",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#3b1a65",
+      "TextureFile": "AuriRex_Purple/defraction.png",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#d8b6f1",
+      "TextureFile": "AuriRex_Purple/idk.png",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#999999",
+      "TextureFile": "",
+      "MaterialOverride": 5
+    },
+    "QuinaryTone": {
+      "HexColor": "#8d7e91",
+      "TextureFile": "AuriRex_Purple/idk_inverted.png",
+      "MaterialOverride": 6
+    },
+    "TextureTiling": 10
+  }
+}

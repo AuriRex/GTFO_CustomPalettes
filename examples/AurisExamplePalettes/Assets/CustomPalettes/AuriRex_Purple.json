@@ -1,0 +1,33 @@
+{
+  "Name": "Fine Purple",
+  "Author": "AuriRex",
+  "SortingName": "Purple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#191221",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#3b1a65",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#d8b6f1",
+      "TextureFile": "AuriRex_Purple/bayer_matrix.png",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#000000",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "QuinaryTone": {
+      "HexColor": "#8d7e91",
+      "TextureFile": "",
+      "MaterialOverride": 3
+    },
+    "TextureTiling": 10
+  }
+}

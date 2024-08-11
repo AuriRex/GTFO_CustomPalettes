@@ -1,0 +1,33 @@
+{
+  "Name": "Vibrant Redish",
+  "Author": "AuriRex",
+  "SortingName": "ZZZPurple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#d60000",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#f67474",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#593b46",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#eb7d00",
+      "TextureFile": "AuriRex_Purple/maze.png",
+      "MaterialOverride": 5
+    },
+    "QuinaryTone": {
+      "HexColor": "#0d0d0d",
+      "TextureFile": "AuriRex_Purple/defraction.png",
+      "MaterialOverride": 6
+    },
+    "TextureTiling": 15
+  }
+}

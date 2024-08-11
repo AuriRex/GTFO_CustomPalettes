@@ -1,0 +1,33 @@
+{
+  "Name": "Deep Blueish",
+  "Author": "AuriRex",
+  "SortingName": "ZZZZPurple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#293389",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#7dd5ed",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#3d81ff",
+      "TextureFile": "AuriRex_Purple/maze.png",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#111213",
+      "TextureFile": "",
+      "MaterialOverride": 6
+    },
+    "QuinaryTone": {
+      "HexColor": "#00308a",
+      "TextureFile": "AuriRex_Purple/defraction.png",
+      "MaterialOverride": 6
+    },
+    "TextureTiling": 30
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "Name": "Double Jump",
+  "Author": "AuriRex",
+  "SortingName": "ZZZZZPurple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#cccccc",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#1dd1d7",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#a762a7",
+      "TextureFile": "AuriRex_Purple/idk_inverted.png",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#00191a",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": 5
+    },
+    "QuinaryTone": {
+      "HexColor": "#404040",
+      "TextureFile": "AuriRex_Purple/rainbow.png",
+      "MaterialOverride": 6
+    },
+    "TextureTiling": 25
+  }
+}

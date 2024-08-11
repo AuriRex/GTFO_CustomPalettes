@@ -1,0 +1,33 @@
+{
+  "Name": "Not Purple",
+  "Author": "AuriRex",
+  "SortingName": "ZPurple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#0d160e",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#35a73e",
+      "TextureFile": "AuriRex_Purple/maze.png",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#b1c09b",
+      "TextureFile": "AuriRex_Purple/idk_inverted.png",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#171717",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": 5
+    },
+    "QuinaryTone": {
+      "HexColor": "#66706a",
+      "TextureFile": "",
+      "MaterialOverride": 6
+    },
+    "TextureTiling": 15
+  }
+}

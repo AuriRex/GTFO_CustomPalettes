@@ -1,0 +1,33 @@
+{
+  "Name": "Glowstick",
+  "Author": "AuriRex",
+  "SortingName": "ZZPurple",
+  "Data": {
+    "PrimaryTone": {
+      "HexColor": "#abffa8",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "SecondaryTone": {
+      "HexColor": "#abffa8",
+      "TextureFile": "AuriRex_Purple/stripes.png",
+      "MaterialOverride": -1
+    },
+    "TertiaryTone": {
+      "HexColor": "#abffa8",
+      "TextureFile": "",
+      "MaterialOverride": -1
+    },
+    "QuaternaryTone": {
+      "HexColor": "#012900",
+      "TextureFile": "AuriRex_Purple/idk_inverted.png",
+      "MaterialOverride": 5
+    },
+    "QuinaryTone": {
+      "HexColor": "#012900",
+      "TextureFile": "",
+      "MaterialOverride": 6
+    },
+    "TextureTiling": 5
+  }
+}

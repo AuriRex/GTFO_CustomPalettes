@@ -1,0 +1,10 @@
+{
+    "name": "AurisCustomPalettesExample",
+    "author": "AuriRex",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/AuriRex/GTFO_CustomPalettes/",
+    "description": "Example Custom Palettes pack - A few Purples, Red, Green, Blue and others.",
+    "dependencies": [
+        "AuriRex-CustomPalettes-1.0.0"
+    ]
+}
