@@ -1,10 +1,9 @@
 ﻿using Clonesoft.Json;
-using System.Collections;
+using CustomPalettes.Core;
 using System.Collections.Generic;
 using UnityEngine;
-using static Il2CppSystem.Globalization.CultureInfo;
 
-namespace CustomPalettes.Core
+namespace CustomPalettes.Data
 {
     public class PaletteData
     {
@@ -43,7 +42,7 @@ namespace CustomPalettes.Core
         {
             get
             {
-                if(PrimaryTone != null)
+                if (PrimaryTone != null)
                     yield return PrimaryTone;
                 if (SecondaryTone != null)
                     yield return SecondaryTone;

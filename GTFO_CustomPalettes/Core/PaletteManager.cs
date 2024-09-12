@@ -1,4 +1,5 @@
 ﻿using Clonesoft.Json;
+using CustomPalettes.Data;
 using GameData;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace CustomPalettes.Core
         private static string _path;
         public static string CustomPalettesPath => _path ??= Path.Combine(BepInEx.Paths.BepInExRootPath, "Assets", "CustomPalettes");
 
+        private static readonly Dictionary<string, CustomPalette> _nameToPalette = new();
+
         private static readonly List<CustomPalette> _palettes = new();
 
         private static readonly JsonSerializerSettings _jsonSettings = new()
@@ -25,6 +28,16 @@ namespace CustomPalettes.Core
 
         public static bool DoLoadTemplateFile { get; set; } = false;
         public static IEnumerable<CustomPalette> Palletes => _palettes;
+
+        public static bool TryGetPaletteFromBlock(VanityItemsTemplateDataBlock block, out CustomPalette palette)
+        {
+            return TryGetPaletteFromId(block.name, out palette);
+        }
+
+        public static bool TryGetPaletteFromId(string identifier, out CustomPalette palette)
+        {
+            return _nameToPalette.TryGetValue(identifier, out palette);
+        }
 
         internal static void Setup()
         {
@@ -150,7 +163,7 @@ namespace CustomPalettes.Core
         {
             L.Info($"Injecting {_palettes.Count} Custom Palettes ...");
             var allPalettes = _palettes.OrderBy(pal => $"{pal.Author}_{pal.SortingName}_{pal.FileName}");
-
+            _nameToPalette.Clear();
 
             foreach (var block in VanityItemsTemplateDataBlock.GetAllBlocks())
             {
@@ -175,6 +188,7 @@ namespace CustomPalettes.Core
                         block.prefab = GeneratePrefab(identifier, cPal.Data, forceRegeneration);
                         block.publicName = cPal.Name;
                         block.internalEnabled = true;
+                        _nameToPalette.Add(identifier, cPal);
 
                         continue;
                     }
@@ -188,6 +202,8 @@ namespace CustomPalettes.Core
                     block.type = ClothesType.Palette;
                     block.publicName = cPal.Name;
                     block.prefab = GeneratePrefab(identifier, cPal.Data, forceRegeneration);
+
+                    _nameToPalette.Add(identifier, cPal);
 
                     VanityItemsTemplateDataBlock.AddBlock(block);
                 }

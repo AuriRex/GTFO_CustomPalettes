@@ -26,7 +26,11 @@
 		</Reference>
 		<Reference Include="Clonesoft.Json">
 			<HintPath>$(ProjectDir)..\lib\Clonesoft.Json.dll</HintPath>
-			<Private>True</Private>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="AllVanity">
+			<HintPath>$(ProjectDir)..\lib\AllVanity.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="BepInEx.Core">
 			<HintPath>$(LoaderRootPath)BepInEx.Core.dll</HintPath>
