@@ -37,6 +37,7 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
 * `Name`: The name displayed in game in the palettes selection menu.
 * `Author`: The palette author, your name most likely (not shown in game atm).
 * `SortingName`: A string used in the palette sorting process, you can change this to move your palette up and down (alphabetically sorted)
+* `Locked`: Set to `true` if this palette should be locked even with AllVanity installed (unlock them via custom plugin instead)
 * `Data`: Contains all the important things:
   * `TextureTiling`: How often the texture should tile. (Bigger number = smaller pattern)
   * `<?>Tone`: The five different parts of a palette
@@ -56,6 +57,7 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
   "Name": "My Cool Palette",
   "Author": "AuriRex",
   "SortingName": "SomethingHere",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#FF0000",

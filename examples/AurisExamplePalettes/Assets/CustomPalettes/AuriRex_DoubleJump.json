@@ -2,6 +2,7 @@
   "Name": "Double Jump",
   "Author": "AuriRex",
   "SortingName": "ZZZZZPurple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#cccccc",

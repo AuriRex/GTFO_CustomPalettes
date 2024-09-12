@@ -2,6 +2,7 @@
   "Name": "Fine Purple",
   "Author": "AuriRex",
   "SortingName": "Purple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#191221",

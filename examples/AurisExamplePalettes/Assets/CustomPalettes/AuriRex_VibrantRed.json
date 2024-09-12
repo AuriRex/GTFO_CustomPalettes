@@ -2,6 +2,7 @@
   "Name": "Vibrant Redish",
   "Author": "AuriRex",
   "SortingName": "ZZZPurple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#d60000",

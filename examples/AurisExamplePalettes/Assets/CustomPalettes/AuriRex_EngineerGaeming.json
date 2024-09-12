@@ -2,6 +2,7 @@
   "Name": "Gaeming Company",
   "Author": "AuriRex",
   "SortingName": "ZZZZZZPurple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#0b0e0c",

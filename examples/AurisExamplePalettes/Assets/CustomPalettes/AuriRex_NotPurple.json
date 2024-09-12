@@ -2,6 +2,7 @@
   "Name": "Not Purple",
   "Author": "AuriRex",
   "SortingName": "ZPurple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#0d160e",

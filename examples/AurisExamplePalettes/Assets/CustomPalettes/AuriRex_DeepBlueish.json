@@ -2,6 +2,7 @@
   "Name": "Deep Blueish",
   "Author": "AuriRex",
   "SortingName": "ZZZZPurple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#293389",

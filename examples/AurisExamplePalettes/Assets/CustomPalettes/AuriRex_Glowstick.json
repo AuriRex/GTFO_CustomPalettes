@@ -2,6 +2,7 @@
   "Name": "Glowstick",
   "Author": "AuriRex",
   "SortingName": "ZZPurple",
+  "Locked": false,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#abffa8",
