@@ -24,7 +24,7 @@ namespace CustomPalettes.Core
         };
 
         private const string TEMPLATE_FILE_NAME = "_template_palette.json";
-        public static string BLOCK_PREFIX => $"{EntryPoint.GUID}_{nameof(CustomPalette)}_".ToUpper();
+        public static string BLOCK_PREFIX => $"{nameof(CustomPalette)}_".ToUpper();
 
         public static bool DoLoadTemplateFile { get; set; } = false;
         public static IEnumerable<CustomPalette> Palletes => _palettes;
