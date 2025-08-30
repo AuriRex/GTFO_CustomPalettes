@@ -27,7 +27,7 @@ namespace CustomPalettes.Core
         public static string BLOCK_PREFIX => $"{nameof(CustomPalette)}_".ToUpper();
 
         public static bool DoLoadTemplateFile { get; set; } = false;
-        public static IEnumerable<CustomPalette> Palletes => _palettes;
+        public static IEnumerable<CustomPalette> Palettes => _palettes;
 
         public static bool TryGetPaletteFromBlock(VanityItemsTemplateDataBlock block, out CustomPalette palette)
         {
@@ -159,6 +159,18 @@ namespace CustomPalettes.Core
             };
         }
 
+        /// <summary>
+        /// Includes blocks that aren't enabled internally.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        private static bool TryGetBlock(string name, out VanityItemsTemplateDataBlock block)
+        {
+            block = VanityItemsTemplateDataBlock.GetBlock(VanityItemsTemplateDataBlock.GetBlockID(name));
+            return block != null;
+        }
+        
         internal static void InjectPalettes(bool forceRegeneration = false)
         {
             L.Info($"Injecting {_palettes.Count} Custom Palettes ...");
@@ -172,23 +184,22 @@ namespace CustomPalettes.Core
                     block.internalEnabled = false;
                 }
             }
-
+            
             foreach (var cPal in allPalettes)
             {
                 try
                 {
                     var identifier = BLOCK_PREFIX + cPal.FileName.ToUpper();
 
-                    VanityItemsTemplateDataBlock block;
-
-                    if (VanityItemsTemplateDataBlock.HasBlock(identifier))
+                    if (TryGetBlock(identifier, out var block))
                     {
-                        block = VanityItemsTemplateDataBlock.GetBlock(identifier);
+                        L.Info($"Found existing block for \"{identifier}\". ({block.persistentID})");
 
                         block.prefab = GeneratePrefab(identifier, cPal.Data, forceRegeneration);
                         block.publicName = cPal.Name;
                         block.internalEnabled = true;
-                        _nameToPalette.Add(identifier, cPal);
+                        
+                        _nameToPalette[identifier] = cPal;
 
                         continue;
                     }
@@ -203,9 +214,29 @@ namespace CustomPalettes.Core
                     block.publicName = cPal.Name;
                     block.prefab = GeneratePrefab(identifier, cPal.Data, forceRegeneration);
 
-                    _nameToPalette.Add(identifier, cPal);
+                    _nameToPalette[identifier] = cPal;
 
                     VanityItemsTemplateDataBlock.AddBlock(block);
+                    
+                    L.Info($"Injected new palette \"{identifier}\". ({block.persistentID})");
+                    
+                    var groupID = cPal.VanityGroupID;
+
+                    if (groupID == 0)
+                    {
+                        // If no group is specified we assume it's a general palette (not tied to a rundown)
+                        // and add it to the games main drop pool for simple progression to unlock if installed.
+                        groupID = 36; // MainDrops group
+                    }
+                    
+                    if (!VanityItemsGroupDataBlock.HasBlock(groupID))
+                    {
+                        L.Warning($"Tried to add Palette \"{cPal?.Name ?? "Unnamed"}\" into group with ID {groupID} that doesn't exist!");
+                        continue;
+                    }
+
+                    VanityItemsGroupDataBlock.GetBlock(groupID).Items.Add(block.persistentID);
+                    L.Info($"Added Palette \"{cPal?.Name ?? "Unnamed"}\" into group with ID {groupID}.");
                 }
                 catch(Exception ex)
                 {

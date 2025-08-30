@@ -10,7 +10,7 @@ namespace CustomPalettes.Data
 
         public string SortingName { get; set; } = "MyCustomPalette";
 
-        public bool Locked { get; set; } = false;
+        public uint VanityGroupID { get; set; } = 0;
 
         public PaletteData Data { get; set; } = new PaletteData();
 

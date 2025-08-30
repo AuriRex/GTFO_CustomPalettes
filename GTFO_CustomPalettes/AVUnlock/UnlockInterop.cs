@@ -1,4 +1,5 @@
-﻿using CustomPalettes.Core;
+﻿/*
+using CustomPalettes.Core;
 using GameData;
 using System.Runtime.CompilerServices;
 
@@ -35,3 +36,4 @@ namespace CustomPalettes.AVUnlock
         }
     }
 }
+*/

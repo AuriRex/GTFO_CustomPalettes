@@ -1,12 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Unity.IL2CPP;
-using CustomPalettes.AVUnlock;
+//using CustomPalettes.AVUnlock;
 using CustomPalettes.Core;
 using HarmonyLib;
-using System;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion(CustomPalettes.EntryPoint.VERSION)]
 [assembly: AssemblyFileVersion(CustomPalettes.EntryPoint.VERSION)]
@@ -32,11 +29,11 @@ namespace CustomPalettes
 
             _harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
 
-            if (IL2CPPChainloader.Instance.Plugins.Keys.Any(guid => guid == AllVanity.Plugin.GUID))
-            {
-                L.Debug($"{nameof(AllVanity)} is installed, registering unlock method.");
-                UnlockInterop.Register();
-            }
+            // if (IL2CPPChainloader.Instance.Plugins.Keys.Any(guid => guid == AllVanity.Plugin.GUID))
+            // {
+            //     L.Debug($"{nameof(AllVanity)} is installed, registering unlock method.");
+            //     UnlockInterop.Register();
+            // }
 
             PaletteManager.Setup();
             PaletteManager.LoadPalettes();
@@ -45,7 +42,7 @@ namespace CustomPalettes
         internal static void OnAssetShardManagerReady()
         {
             L.Debug("AssetShardManager ready, Injecting Palettes");
-            TextureLoader.Setup(PaletteManager.Palletes);
+            TextureLoader.Setup(PaletteManager.Palettes);
             PaletteManager.InjectPalettes();
         }
 
@@ -59,7 +56,7 @@ namespace CustomPalettes
                 // Most likely MTFO Hot-Reload
                 L.Warning("Reloading Custom Palettes ...");
                 PaletteManager.LoadPalettes();
-                TextureLoader.Setup(PaletteManager.Palletes, doCleanup: true);
+                TextureLoader.Setup(PaletteManager.Palettes, doCleanup: true);
                 PaletteManager.InjectPalettes(forceRegeneration: true);
                 PersistentInventoryManager.m_dirty = true; // Refreshes inventory
             }
