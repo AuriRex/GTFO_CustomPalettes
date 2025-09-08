@@ -2,30 +2,29 @@
 using GameData;
 using HarmonyLib;
 
-namespace CustomPalettes
+namespace CustomPalettes;
+
+public static class Patches
 {
-    public static class Patches
+
+    [HarmonyPatch(typeof(AssetShardManager), nameof(AssetShardManager.Setup))]
+    internal static class AssetShardManager_Setup_Patch
     {
-
-        [HarmonyPatch(typeof(AssetShardManager), nameof(AssetShardManager.Setup))]
-        internal static class AssetShardManager_Setup_Patch
+        [HarmonyPriority(Priority.High)]
+        public static void Postfix()
         {
-            [HarmonyPriority(Priority.High)]
-            public static void Postfix()
-            {
-                EntryPoint.OnAssetShardManagerReady();
-            }
+            EntryPoint.OnAssetShardManagerReady();
         }
-
-        [HarmonyPatch(typeof(GameDataInit), nameof(GameDataInit.Initialize))]
-        internal static class GameDataInit_Initialize_Patch
-        {
-            [HarmonyPriority(Priority.High)]
-            public static void Postfix()
-            {
-                EntryPoint.OnGameDataInit();
-            }
-        }
-
     }
+
+    [HarmonyPatch(typeof(GameDataInit), nameof(GameDataInit.Initialize))]
+    internal static class GameDataInit_Initialize_Patch
+    {
+        [HarmonyPriority(Priority.High)]
+        public static void Postfix()
+        {
+            EntryPoint.OnGameDataInit();
+        }
+    }
+
 }

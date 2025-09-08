@@ -3,95 +3,94 @@ using CustomPalettes.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CustomPalettes.Data
+namespace CustomPalettes.Data;
+
+public class PaletteData
 {
-    public class PaletteData
+    public Tone PrimaryTone { get; set; } = new Tone();
+
+    public Tone SecondaryTone { get; set; } = new Tone();
+
+    public Tone TertiaryTone { get; set; } = new Tone();
+
+    public Tone QuaternaryTone { get; set; } = new Tone();
+
+    public Tone QuinaryTone { get; set; } = new Tone();
+
+    public float TextureTiling { get; set; } = 1f;
+
+    public class Tone
     {
-        public Tone PrimaryTone { get; set; } = new Tone();
+        public string HexColor { get; set; } = "#FFFFFF";
 
-        public Tone SecondaryTone { get; set; } = new Tone();
+        public string TextureFile { get; set; } = string.Empty;
 
-        public Tone TertiaryTone { get; set; } = new Tone();
+        public int MaterialOverride { get; set; } = -1;
+    }
 
-        public Tone QuaternaryTone { get; set; } = new Tone();
 
-        public Tone QuinaryTone { get; set; } = new Tone();
+    [JsonIgnore]
+    private static readonly ClothesPalette.Tone _errorTone = new()
+    {
+        m_color = Color.magenta,
+        m_texture = Texture2D.whiteTexture,
+        m_materialOverride = -1,
+    };
 
-        public float TextureTiling { get; set; } = 1f;
-
-        public class Tone
+    [JsonIgnore]
+    public IEnumerable<Tone> Tones
+    {
+        get
         {
-            public string HexColor { get; set; } = "#FFFFFF";
-
-            public string TextureFile { get; set; } = string.Empty;
-
-            public int MaterialOverride { get; set; } = -1;
+            if (PrimaryTone != null)
+                yield return PrimaryTone;
+            if (SecondaryTone != null)
+                yield return SecondaryTone;
+            if (TertiaryTone != null)
+                yield return TertiaryTone;
+            if (QuaternaryTone != null)
+                yield return QuaternaryTone;
+            if (QuinaryTone != null)
+                yield return QuinaryTone;
         }
+    }
 
-
-        [JsonIgnore]
-        private static readonly ClothesPalette.Tone _errorTone = new()
+    internal ClothesPalette.Tone GetTone(int v)
+    {
+        switch (v)
         {
-            m_color = Color.magenta,
-            m_texture = Texture2D.whiteTexture,
-            m_materialOverride = -1,
-        };
-
-        [JsonIgnore]
-        public IEnumerable<Tone> Tones
-        {
-            get
-            {
-                if (PrimaryTone != null)
-                    yield return PrimaryTone;
-                if (SecondaryTone != null)
-                    yield return SecondaryTone;
-                if (TertiaryTone != null)
-                    yield return TertiaryTone;
-                if (QuaternaryTone != null)
-                    yield return QuaternaryTone;
-                if (QuinaryTone != null)
-                    yield return QuinaryTone;
-            }
+            default:
+            case 1:
+                return GetTone(PrimaryTone);
+            case 2:
+                return GetTone(SecondaryTone);
+            case 3:
+                return GetTone(TertiaryTone);
+            case 4:
+                return GetTone(QuaternaryTone);
+            case 5:
+                return GetTone(QuinaryTone);
         }
+    }
 
-        internal ClothesPalette.Tone GetTone(int v)
-        {
-            switch (v)
-            {
-                default:
-                case 1:
-                    return GetTone(PrimaryTone);
-                case 2:
-                    return GetTone(SecondaryTone);
-                case 3:
-                    return GetTone(TertiaryTone);
-                case 4:
-                    return GetTone(QuaternaryTone);
-                case 5:
-                    return GetTone(QuinaryTone);
-            }
-        }
+    private static ClothesPalette.Tone GetTone(Tone tone)
+    {
+        if (tone == null)
+            return _errorTone;
 
-        private static ClothesPalette.Tone GetTone(Tone tone)
+        if (!ColorUtility.TryParseHtmlString(tone.HexColor, out var col))
         {
-            if (tone == null)
+            if (!ColorUtility.TryParseHtmlString($"#{tone.HexColor}", out col))
                 return _errorTone;
-
-            if (!ColorUtility.TryParseHtmlString(tone.HexColor, out var col))
-            {
-                if (!ColorUtility.TryParseHtmlString($"#{tone.HexColor}", out col))
-                    return _errorTone;
-            }
-
-            Texture2D texture = TextureLoader.GetTexture(tone.TextureFile);
-
-            return new ClothesPalette.Tone
-            {
-                m_color = col,
-                m_texture = texture,
-                m_materialOverride = tone.MaterialOverride,
-            };
         }
+
+        Texture2D texture = TextureLoader.GetTexture(tone.TextureFile);
+
+        return new ClothesPalette.Tone
+        {
+            m_color = col,
+            m_texture = texture,
+            m_materialOverride = tone.MaterialOverride,
+        };
     }
 }

@@ -4,172 +4,171 @@ using System.IO;
 using CustomPalettes.Data;
 using UnityEngine;
 
-namespace CustomPalettes.Core
+namespace CustomPalettes.Core;
+
+public static class TextureLoader
 {
-    public class TextureLoader
+    private static readonly Dictionary<string, TextureData> _textures = new();
+
+    public static void Setup(IEnumerable<CustomPalette> palettes, bool doCleanup = false)
     {
-        private static readonly Dictionary<string, TextureData> _textures = new();
-
-        public static void Setup(IEnumerable<CustomPalette> palletes, bool doCleanup = false)
+        foreach(var pal in palettes)
         {
-            foreach(var pal in palletes)
-            {
-                if (pal == null)
-                    continue;
+            if (pal == null)
+                continue;
 
-                ProcessPaletteData(pal);
-            }
-
-            if(doCleanup)
-                CleanupUnusedTextures(palletes);
+            ProcessPaletteData(pal);
         }
 
-        private static void CleanupUnusedTextures(IEnumerable<CustomPalette> palletes)
+        if(doCleanup)
+            CleanupUnusedTextures(palettes);
+    }
+
+    private static void CleanupUnusedTextures(IEnumerable<CustomPalette> palettes)
+    {
+        var potentiallyUnused = new HashSet<string>(_textures.Keys);
+
+        foreach (var pal in palettes)
         {
-            var potentiallyUnused = new HashSet<string>(_textures.Keys);
+            var tones = pal?.Data?.Tones;
 
-            foreach (var pal in palletes)
+            if (tones == null)
+                continue;
+
+            foreach(var tone in tones)
             {
-                var tones = pal?.Data?.Tones;
-
-                if (tones == null)
+                if (string.IsNullOrWhiteSpace(tone.TextureFile))
                     continue;
 
-                foreach(var tone in tones)
+                if(potentiallyUnused.Contains(tone.TextureFile))
                 {
-                    if (string.IsNullOrWhiteSpace(tone.TextureFile))
-                        continue;
-
-                    if(potentiallyUnused.Contains(tone.TextureFile))
-                    {
-                        potentiallyUnused.Remove(tone.TextureFile);
-                    }
-                }
-            }
-
-            if(potentiallyUnused.Count == 0)
-            {
-                return;
-            }
-
-            L.Debug($"Found {potentiallyUnused.Count} unused Textures.");
-
-            foreach(var unused in potentiallyUnused)
-            {
-                if(_textures.TryGetValue(unused, out var unusedTexData))
-                {
-                    UnityEngine.Object.Destroy(unusedTexData.Texture);
-                    _textures.Remove(unused);
-                    L.Debug($"Unloaded \"{unused}\"!");
+                    potentiallyUnused.Remove(tone.TextureFile);
                 }
             }
         }
 
-        private static void ProcessPaletteData(CustomPalette pal)
+        if(potentiallyUnused.Count == 0)
         {
-            var data = pal.Data;
-            if (data == null)
-                return;
-
-            foreach(var tone in data.Tones)
-            {
-                var tex = tone.TextureFile;
-
-                if (string.IsNullOrWhiteSpace(tex))
-                    continue;
-
-                if (AttemptLoad(tex, pal))
-                {
-                    L.Msg($"Loaded Texture \"{tex}\" for Palette {pal.FileName}");
-                }
-            }
+            return;
         }
 
-        private static bool AttemptLoad(string tex, CustomPalette pal)
+        L.Debug($"Found {potentiallyUnused.Count} unused Textures.");
+
+        foreach(var unused in potentiallyUnused)
         {
-            var fullTexturePath = Path.Combine(PaletteManager.CustomPalettesPath, tex);
-
-            if (!File.Exists(fullTexturePath))
+            if(_textures.TryGetValue(unused, out var unusedTexData))
             {
-                PrintLoadError("File doesn't exist!", tex, pal);
-                return false;
+                UnityEngine.Object.Destroy(unusedTexData.Texture);
+                _textures.Remove(unused);
+                L.Debug($"Unloaded \"{unused}\"!");
             }
+        }
+    }
 
-            var lastWrittenTime = File.GetLastWriteTimeUtc(fullTexturePath);
+    private static void ProcessPaletteData(CustomPalette pal)
+    {
+        var data = pal.Data;
+        if (data == null)
+            return;
 
-            if (_textures.TryGetValue(tex, out var loadedTexData))
+        foreach(var tone in data.Tones)
+        {
+            var tex = tone.TextureFile;
+
+            if (string.IsNullOrWhiteSpace(tex))
+                continue;
+
+            if (AttemptLoad(tex, pal))
             {
-                if(lastWrittenTime == loadedTexData.EditedTime)
-                {
-                    return true;
-                }
-
-                UnityEngine.Object.Destroy(loadedTexData.Texture);
-
-                _textures.Remove(tex);
+                L.Msg($"Loaded Texture \"{tex}\" for Palette {pal.FileName}");
             }
+        }
+    }
 
-            var extension = Path.GetExtension(fullTexturePath);
-            if (extension.ToLower() != ".png" && extension.ToLower() != ".jpg")
-            {
-                PrintLoadError("TextureFile is not a valid image file.", tex, pal);
-                return false;
-            }
+    private static bool AttemptLoad(string tex, CustomPalette pal)
+    {
+        var fullTexturePath = Path.Combine(PaletteManager.CustomPalettesPath, tex);
 
-            try
-            {
-                var tex2d = new Texture2D(2, 2);
-
-                var bytes = File.ReadAllBytes(fullTexturePath);
-
-                if (!ImageConversion.LoadImage(tex2d, bytes, false))
-                {
-                    PrintLoadError("Image data can't be loaded!", tex, pal);
-                    UnityEngine.Object.Destroy(tex2d);
-                    return false;
-                }
-
-                tex2d.hideFlags = HideFlags.HideAndDontSave;
-                UnityEngine.Object.DontDestroyOnLoad(tex2d);
-
-                _textures.Add(tex, new TextureData()
-                {
-                    Texture = tex2d,
-                    EditedTime = lastWrittenTime,
-                });
-
-                return true;
-            }
-            catch(Exception ex)
-            {
-                PrintLoadError(ex.Message, tex, pal);
-            }
-
+        if (!File.Exists(fullTexturePath))
+        {
+            PrintLoadError("File doesn't exist!", tex, pal);
             return false;
         }
 
-        private static void PrintLoadError( string message, string tex, CustomPalette pal)
-        {
-            L.Error($"Texture \"{tex}\" could not be loaded for Palette \"{pal?.Name}\" ({pal.FileName}): {message}");
-        }
+        var lastWrittenTime = File.GetLastWriteTimeUtc(fullTexturePath);
 
-        public static Texture2D GetTexture(string textureFile)
+        if (_textures.TryGetValue(tex, out var loadedTexData))
         {
-            if (string.IsNullOrWhiteSpace(textureFile))
-                return Texture2D.whiteTexture;
-
-            if (_textures.TryGetValue(textureFile, out var texData))
+            if(lastWrittenTime == loadedTexData.EditedTime)
             {
-                return texData.Texture;
+                return true;
             }
 
-            return Texture2D.whiteTexture;
+            UnityEngine.Object.Destroy(loadedTexData.Texture);
+
+            _textures.Remove(tex);
         }
+
+        var extension = Path.GetExtension(fullTexturePath);
+        if (extension.ToLower() != ".png" && extension.ToLower() != ".jpg")
+        {
+            PrintLoadError("TextureFile is not a valid image file.", tex, pal);
+            return false;
+        }
+
+        try
+        {
+            var tex2d = new Texture2D(2, 2);
+
+            var bytes = File.ReadAllBytes(fullTexturePath);
+
+            if (!tex2d.LoadImage(bytes, false))
+            {
+                PrintLoadError("Image data can't be loaded!", tex, pal);
+                UnityEngine.Object.Destroy(tex2d);
+                return false;
+            }
+
+            tex2d.hideFlags = HideFlags.HideAndDontSave;
+            UnityEngine.Object.DontDestroyOnLoad(tex2d);
+
+            _textures.Add(tex, new TextureData()
+            {
+                Texture = tex2d,
+                EditedTime = lastWrittenTime,
+            });
+
+            return true;
+        }
+        catch(Exception ex)
+        {
+            PrintLoadError(ex.Message, tex, pal);
+        }
+
+        return false;
     }
 
-    public class TextureData
+    private static void PrintLoadError(string message, string tex, CustomPalette pal)
     {
-        public Texture2D Texture { get; internal set; }
-        public DateTime EditedTime { get; internal set; }
+        L.Error($"Texture \"{tex}\" could not be loaded for Palette \"{pal?.Name}\" ({pal.FileName}): {message}");
     }
+
+    public static Texture2D GetTexture(string textureFile)
+    {
+        if (string.IsNullOrWhiteSpace(textureFile))
+            return Texture2D.whiteTexture;
+
+        if (_textures.TryGetValue(textureFile, out var texData))
+        {
+            return texData.Texture;
+        }
+
+        return Texture2D.whiteTexture;
+    }
+}
+
+public class TextureData
+{
+    public Texture2D Texture { get; internal set; }
+    public DateTime EditedTime { get; internal set; }
 }
