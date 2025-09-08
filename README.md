@@ -51,7 +51,8 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
       * #RGBA 
       * The literal strings: `red`, `cyan`, `blue`, `darkblue`, `lightblue`, `purple`, `yellow`, `lime`, `fuchsia`, `white`, `silver`, `grey`, `black`, `orange`, `brown`, `maroon`, `green`, `olive`, `navy`, `teal`, `aqua`, `magenta`.
     * `TextureFile`: The (relative) path to an image file (.png or .jpg)
-    * `MaterialOverride`: Used to override the material used on this tone, leave as -1 if unsure.
+    * `MaterialOverride`: Used to override the material used on this tone, leave as -1 if unsure.  
+      (Check out the [Material Reference Sheet](https://github.com/AuriRex/GTFO_CustomPalettes/blob/main/img/material_ref/README.md)!!)
 ## A few example palettes:
 ### Colors only
 ```json
@@ -86,7 +87,7 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
       "TextureFile": "",
       "MaterialOverride": 2
     },
-    "TextureTiling": 20
+    "TextureTiling": 1
   }
 }
 ```
@@ -123,7 +124,7 @@ In this example, the `icon.png` file has been placed into the folder `AuriRex_My
       "TextureFile": "AuriRex_MyCoolPalette/icon.png",
       "MaterialOverride": 2
     },
-    "TextureTiling": 20
+    "TextureTiling": 1
   }
 }
 ```
