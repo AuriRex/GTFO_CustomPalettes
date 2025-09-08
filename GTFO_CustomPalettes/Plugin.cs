@@ -1,35 +1,33 @@
-﻿using BepInEx;
+﻿using System.Reflection;
+using BepInEx;
 using BepInEx.Unity.IL2CPP;
+using CustomPalettes;
 //using CustomPalettes.AVUnlock;
 using CustomPalettes.Core;
 using HarmonyLib;
-using System.Reflection;
 
-[assembly: AssemblyVersion(CustomPalettes.EntryPoint.VERSION)]
-[assembly: AssemblyFileVersion(CustomPalettes.EntryPoint.VERSION)]
-[assembly: AssemblyInformationalVersion(CustomPalettes.EntryPoint.VERSION)]
+[assembly: AssemblyVersion(Plugin.VERSION)]
+[assembly: AssemblyFileVersion(Plugin.VERSION)]
+[assembly: AssemblyInformationalVersion(Plugin.VERSION)]
 
 namespace CustomPalettes;
 
-[BepInPlugin(GUID, NAME, VERSION)]
-[BepInDependency(AllVanity.Plugin.GUID, BepInDependency.DependencyFlags.SoftDependency)]
-public class EntryPoint : BasePlugin
+[BepInPlugin(GUID, MOD_NAME, VERSION)]
+public class Plugin : BasePlugin
 {
     public const string GUID = "dev.aurirex.gtfo.custompalettes";
-    public const string NAME = "Custom Palettes";
-    public const string VERSION = "1.1.0";
+    public const string MOD_NAME = "Custom Palettes";
+    public const string VERSION = ManifestInfo.TSVersion;
 
-    private Harmony _harmonyInstance;
+    private static readonly Harmony _harmony = new(GUID);
 
     public override void Load()
     {
         L.Logger = Log;
 
-        _harmonyInstance = new Harmony(GUID);
+        _harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-        _harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
-
-        // if (IL2CPPChainloader.Instance.Plugins.Keys.Any(guid => guid == AllVanity.Plugin.GUID))
+        // if (IL2CPPChainloader.Instance.Plugins.Keys.Any(guid => guid == ALLVANITY_GUID))
         // {
         //     L.Debug($"{nameof(AllVanity)} is installed, registering unlock method.");
         //     UnlockInterop.Register();

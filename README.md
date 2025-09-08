@@ -37,7 +37,9 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
 * `Name`: The name displayed in game in the palettes selection menu.
 * `Author`: The palette author, your name most likely (not shown in game atm).
 * `SortingName`: A string used in the palette sorting process, you can change this to move your palette up and down (alphabetically sorted)
-* `Locked`: Set to `true` if this palette should be locked even with AllVanity installed (unlock them via custom plugin instead)
+* `VanityGroupID`: Allows rundown developers to automatically insert this palette into a specific group.
+  This property is ignored if a block with the identifier of this CustomPalette already exists.  
+  (Note: Leave this set to `0` for palettes that aren't tied to your own rundown.)
 * `Data`: Contains all the important things:
   * `TextureTiling`: How often the texture should tile. (Bigger number = smaller pattern)
   * `<?>Tone`: The five different parts of a palette
@@ -57,7 +59,7 @@ Don't forget to include the folder in your `TextureFile` field: `AuriRex_MyCoolP
   "Name": "My Cool Palette",
   "Author": "AuriRex",
   "SortingName": "SomethingHere",
-  "Locked": false,
+  "VanityGroupID": 0,
   "Data": {
     "PrimaryTone": {
       "HexColor": "#FF0000",
@@ -125,3 +127,30 @@ In this example, the `icon.png` file has been placed into the folder `AuriRex_My
   }
 }
 ```
+
+## For rundown devs:
+
+CustomPalettes checks for already existing `VanityItemsTemplateDataBlock`s with the `name` field set to the custom palettes' identifier.  
+Identifiers look like this: `CUSTOMPALETTE_FILE_NAME_ALL_UPPERCASE.JSON` and are printed into the BepInEx console on startup!
+
+With SimpleProgression installed, you're able to drop custom palettes via all vanilla means.
+
+So by specifying an 'empty' block like in the example below, you're able to ensure a specific palette always ends up with the specified persistentID.  
+
+```json
+{
+  "publicName": "",
+  "type": 4,
+  "prefab": "",
+  "DropWeight": 1.1,
+  "icon": "",
+  "name": "CUSTOMPALETTE_FILE_NAME_ALL_UPPERCASE.JSON",
+  "internalEnabled": true,
+  "persistentID": 170
+}
+```
+This way you're able to use the ID in other blocks like:
+* `VanityItemsGroupDataBlock`: Used to define 'drop groups' for expeditions ...  
+  or
+* `VanityItemsLayerDropsDataBlock`: Uses the same groups to drop on x layers completed
+

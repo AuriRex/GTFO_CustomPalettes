@@ -13,7 +13,7 @@ public static class Patches
         [HarmonyPriority(Priority.High)]
         public static void Postfix()
         {
-            EntryPoint.OnAssetShardManagerReady();
+            Plugin.OnAssetShardManagerReady();
         }
     }
 
@@ -23,7 +23,7 @@ public static class Patches
         [HarmonyPriority(Priority.High)]
         public static void Postfix()
         {
-            EntryPoint.OnGameDataInit();
+            Plugin.OnGameDataInit();
         }
     }
 
