@@ -27,12 +27,6 @@ public class Plugin : BasePlugin
 
         _harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-        // if (IL2CPPChainloader.Instance.Plugins.Keys.Any(guid => guid == ALLVANITY_GUID))
-        // {
-        //     L.Debug($"{nameof(AllVanity)} is installed, registering unlock method.");
-        //     UnlockInterop.Register();
-        // }
-
         PaletteManager.Setup();
         PaletteManager.LoadPalettes();
     }
