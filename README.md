@@ -10,6 +10,8 @@ MTFO Hot-Reloading is supported for palettes **and** texture files, just place t
 
 ## **Either [AllVanity](https://thunderstore.io/c/gtfo/p/AuriRex/AllVanity/) or [DeviousLick](https://thunderstore.io/c/gtfo/p/Frog/DeviousLick/) is required for the Palettes to show up in game!**
 
+### [custom rundown developers look here](#for-rundown-devs)
+
 ## Custom Palettes json file
 
 Textures and colors are applied *multiplicative*, that means if you want your image texture to properly show make sure to set your color to white / `#FFF`
@@ -134,10 +136,10 @@ In this example, the `icon.png` file has been placed into the folder `AuriRex_My
 CustomPalettes checks for already existing `VanityItemsTemplateDataBlock`s with the `name` field set to the custom palettes' identifier.  
 Identifiers look like this: `CUSTOMPALETTE_FILE_NAME_ALL_UPPERCASE.JSON` and are printed into the BepInEx console on startup!
 
-With SimpleProgression installed, you're able to drop custom palettes via all vanilla means.
+With `SimpleProgression` installed, you're able to drop custom palettes via all vanilla means.
 
 So by specifying an 'empty' block like in the example below, you're able to ensure a specific palette always ends up with the specified persistentID.  
-
+`VanityItemsTemplateDataBlock`:
 ```json
 {
   "publicName": "",
