@@ -1,4 +1,4 @@
-# GTFO_CustomPalettes
+# Custom Palettes
 
 A GTFO mod that lets you add custom color palettes using json files, no Unity or DataBlock fiddling required!
 
